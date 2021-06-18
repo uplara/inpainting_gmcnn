@@ -180,7 +180,7 @@ class Discriminator(BaseNet):
             if self.norm is not None:
                 x = self.norm(x)
             x = self.act(x)
-        self.embedding = x.view(x.size(0), -1)
+        self.embedding = x.reshape(x.size(0), -1)
         self.logit = self.layers[-1](self.embedding)
         return self.logit
 

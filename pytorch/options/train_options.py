@@ -13,19 +13,20 @@ class TrainOptions:
                                  help='dataset of the experiment.')
         self.parser.add_argument('--data_file', type=str, default='', help='the file storing training image paths')
         self.parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2')
-        self.parser.add_argument('--checkpoint_dir', type=str, default='./checkpoints', help='models are saved here')
+        self.parser.add_argument('--checkpoint_dir', type=str, default='./exp_gmcnn_v1', help='models are saved here')
         self.parser.add_argument('--load_model_dir', type=str, default='', help='pretrained models are given here')
         self.parser.add_argument('--phase', type=str, default='train')
 
         # input/output sizes
-        self.parser.add_argument('--batch_size', type=int, default=16, help='input batch size')
+        self.parser.add_argument('--batch_size', type=int, default=8, help='input batch size')
+        self.parser.add_argument('--cloud_path', type=str, default="gs://experiments_logs/gmm/TOPS/gl/exp_gmcnn_v1", help='input batch size')
 
         # for setting inputs
         self.parser.add_argument('--random_crop', type=int, default=1,
                                  help='using random crop to process input image when '
                                       'the required size is smaller than the given size')
         self.parser.add_argument('--random_mask', type=int, default=1)
-        self.parser.add_argument('--mask_type', type=str, default='random')
+        self.parser.add_argument('--mask_type', type=str, default='stroke')
         self.parser.add_argument('--pretrain_network', type=int, default=0)
         self.parser.add_argument('--lambda_adv', type=float, default=1e-3)
         self.parser.add_argument('--lambda_rec', type=float, default=1.4)
@@ -39,7 +40,7 @@ class TrainOptions:
 
         self.parser.add_argument('--train_spe', type=int, default=1000)
         self.parser.add_argument('--epochs', type=int, default=40)
-        self.parser.add_argument('--viz_steps', type=int, default=5)
+        self.parser.add_argument('--viz_steps', type=int, default=100)
         self.parser.add_argument('--spectral_norm', type=int, default=1)
 
         self.parser.add_argument('--img_shapes', type=str, default='256,256,3',

@@ -1,4 +1,5 @@
 import os
+import torch
 from torch.utils.data import DataLoader
 from torchvision import transforms
 import torchvision.utils as vutils
@@ -26,8 +27,8 @@ if not os.path.exists(os.path.join('/content/', tfrecord_path.split('/')[-1])):
     os.system(cmd)
 
 tfrecord_path = os.path.join('/content/', tfrecord_path.split('/')[-1])
-trainset, trainset_length = define_dataset(tfrecord_path, args.batch_size, train=True)
-# valset, valset_length = define_dataset(tfrecord_path, args.batch_size, train=False)
+trainset, trainset_length = define_dataset(tfrecord_path, config.batch_size, train=True)
+# valset, valset_length = define_dataset(tfrecord_path, config.batch_size, train=False)
 print('data loaded..')
 
 print('configuring model..')
@@ -96,9 +97,9 @@ for epoch in range(config.epochs):
             writer.add_image('gt', im_gt, cnt)
             writer.add_image('input', im_input, cnt)
             writer.add_image('completed', im_completed, cnt)
-            if (i+1) % config.train_spe == 0:
-                print('saving model ..')
-                ourModel.save_networks(epoch+1)
+            # if (i+1) % config.train_spe == 0:
+            #     print('saving model ..')
+            #     ourModel.save_networks(epoch+1)
         cnt += 1
     ourModel.save_networks(epoch+1)
 

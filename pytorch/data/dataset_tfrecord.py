@@ -7,6 +7,7 @@ import shutil
 import random
 import numpy as np
 import tensorflow as tf
+import tensorflow.keras.backend as B
 
 
 num_classes = [2, 1] # grapy, edges
@@ -432,7 +433,8 @@ def create_dataset(parse_func, filter_func, tfrecord_path, batch_size, mode, dat
         num_lines = 5000
         batch_size = 1
     else:
-        num_lines = sum(1 for _ in dataset)
+        # num_lines = sum(1 for _ in dataset)
+        num_lines = 15000
 
     if mode == "train":
         dataset = dataset.take(int(data_split * num_lines))

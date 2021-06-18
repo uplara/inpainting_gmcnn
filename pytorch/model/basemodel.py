@@ -49,6 +49,11 @@ class BaseModel(nn.Module):
                     # net.cuda(self.gpu_ids[0])
                 else:
                     torch.save(net.state_dict(), save_path)
+                    cmd = f"gsutil -m cp -r {save_path} {self.opt.cloud_path}"
+                    os.system(cmd)
+        if which_epoch == 1:
+            cmd = f"gsutil -m cp -r {self.opt.checkpoint_dir} {self.opt.cloud_path}"
+            os.system(cmd)
 
     def __patch_instance_norm_state_dict(self, state_dict, module, keys, i=0):
         key = keys[i]
