@@ -271,9 +271,14 @@ class InpaintingModel_GMCNN(BaseModel):
             self.mrfloss = IDMRFLoss()
 
     def initVariables(self):
-        self.gt = self.input['gt']
-        mask, rect = generate_mask(self.opt.mask_type, self.opt.img_shapes, self.opt.mask_shapes)
-        self.mask_01 = torch.from_numpy(mask).cuda().repeat([self.opt.batch_size, 1, 1, 1])
+        # self.gt = self.input['gt']
+        self.gt = self.input['person']
+        self.im_in = self.input['person_priors']
+        self.mask_01 = self.input['inpaint_region']
+        self.exp_seg = self.input['exp_seg']
+
+        # mask, rect = generate_mask(self.opt.mask_type, self.opt.img_shapes, self.opt.mask_shapes)
+        # self.mask_01 = torch.from_numpy(mask).cuda().repeat([self.opt.batch_size, 1, 1, 1])
         self.mask = self.confidence_mask_layer(self.mask_01)
         if self.opt.mask_type == 'rect':
             self.rect = [rect[0, 0], rect[0, 1], rect[0, 2], rect[0, 3]]
@@ -281,8 +286,10 @@ class InpaintingModel_GMCNN(BaseModel):
                             self.rect[2]:self.rect[2] + self.rect[3]]
         else:
             self.gt_local = self.gt
-        self.im_in = self.gt * (1 - self.mask_01)
-        self.gin = torch.cat((self.im_in, self.mask_01), 1)
+
+        # self.im_in = self.gt * (1 - self.mask_01)
+
+        self.gin = torch.cat((self.im_in, self.mask_01, self.exp_seg), 1)
 
     def forward_G(self):
         self.G_loss_reconstruction = self.recloss(self.completed * self.mask, self.gt.detach() * self.mask)
